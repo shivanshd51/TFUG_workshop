@@ -1,2 +1,2 @@
-# vibe-coding-hackathon-2026
+# Tensor Flow User Group Workshop-2026
 repository for hackathon
