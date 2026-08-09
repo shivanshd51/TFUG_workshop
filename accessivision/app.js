@@ -5,8 +5,8 @@
 
 // ===== CONFIGURATION =====
 const CONFIG = {
-    OLLAMA_BASE: 'http://localhost:11434',
-    DEFAULT_MODEL: 'gemma4:9b',
+    API_BASE: 'https://generativelanguage.googleapis.com/v1beta/models',
+    DEFAULT_MODEL: 'gemma-4-12b-it',
     MAX_RETRIES: 2,
     TOAST_DURATION: 4000,
 };
@@ -52,18 +52,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ===== SETTINGS =====
 function initSettings() {
+    const apiInput = $('#api-key-input');
     const modelSelect = $('#model-select');
     const saveBtn = $('#save-settings-btn');
     const statusDot = $('#api-key-status');
 
+    apiInput.value = state.apiKey;
     modelSelect.value = state.model;
-    statusDot.classList.add('connected'); // no key needed for local Ollama
+    if (state.apiKey) statusDot.classList.add('connected');
 
     saveBtn.addEventListener('click', () => {
+        state.apiKey = apiInput.value.trim();
         state.model = modelSelect.value;
+        localStorage.setItem('av_api_key', state.apiKey);
         localStorage.setItem('av_model', state.model);
+        statusDot.classList.toggle('connected', !!state.apiKey);
         closeModal('settings-modal');
-        showToast('Settings saved — using local Ollama', 'success');
+        showToast(state.apiKey ? 'Settings saved successfully' : 'API key cleared', state.apiKey ? 'success' : 'info');
     });
 }
 
@@ -151,20 +156,28 @@ function clearImage() {
     showSection('upload-section');
 }
 
-// ===== OLLAMA API CLIENT (local) =====
+// ===== GEMMA API CLIENT (Google AI Studio) =====
 async function callGemma(prompt, includeImage = true) {
-    const url = `${CONFIG.OLLAMA_BASE}/api/generate`;
+    const url = `${CONFIG.API_BASE}/${state.model}:generateContent?key=${state.apiKey}`;
+
+    const parts = [{ text: prompt }];
+    if (includeImage && state.imageBase64) {
+        parts.push({
+            inlineData: {
+                mimeType: state.imageMimeType,
+                data: state.imageBase64
+            }
+        });
+    }
 
     const body = {
-        model: state.model,
-        prompt,
-        stream: false,
-        options: { temperature: 0.3 },
+        contents: [{ parts }],
+        generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 8192,
+            topP: 0.95,
+        }
     };
-    if (includeImage && state.imageBase64) {
-        // Ollama expects raw base64 (no data: prefix), same string we already store
-        body.images = [state.imageBase64];
-    }
 
     let lastError;
     for (let attempt = 0; attempt <= CONFIG.MAX_RETRIES; attempt++) {
@@ -177,20 +190,16 @@ async function callGemma(prompt, includeImage = true) {
 
             if (!response.ok) {
                 const err = await response.json().catch(() => ({}));
-                const msg = err?.error || `HTTP ${response.status}`;
+                const msg = err?.error?.message || `HTTP ${response.status}`;
                 throw new Error(msg);
             }
 
             const data = await response.json();
-            const text = data?.response;
-            if (!text) throw new Error('Empty response from Ollama');
+            const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!text) throw new Error('Empty response from Gemma');
             return text;
         } catch (err) {
             lastError = err;
-            // Give a clearer hint for the most common local-setup failure
-            if (err instanceof TypeError && /fetch/i.test(err.message)) {
-                lastError = new Error('Could not reach Ollama at localhost:11434. Is "ollama serve" running, and did you set OLLAMA_ORIGINS?');
-            }
             if (attempt < CONFIG.MAX_RETRIES) {
                 await sleep(1000 * (attempt + 1));
             }
@@ -223,6 +232,11 @@ function initAnalysis() {
 
 async function startAnalysis() {
     if (state.isAnalyzing) return;
+    if (!state.apiKey) {
+        showToast('Please set your API key in Settings first.', 'error');
+        openModal('settings-modal');
+        return;
+    }
     if (!state.imageBase64) {
         showToast('Please upload a screenshot first.', 'error');
         return;

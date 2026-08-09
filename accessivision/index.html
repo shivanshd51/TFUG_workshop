@@ -297,26 +297,21 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <p class="form-hint">
-                        Using local Ollama at <code>http://localhost:11434</code> — no API key needed.
-                        <span id="api-key-status" class="status-dot connected"></span>
-                    </p>
-                    <p class="form-hint">Run <code>ollama serve</code> and make sure you've pulled a vision model (see README).</p>
+                    <label for="api-key-input" class="form-label">Google AI API Key</label>
+                    <div class="input-with-status">
+                        <input type="password" id="api-key-input" class="form-input" placeholder="Enter your API key...">
+                        <span id="api-key-status" class="status-dot"></span>
+                    </div>
+                    <p class="form-hint">Get your free API key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a></p>
                 </div>
                 <div class="form-group">
-                    <label for="model-select" class="form-label">Ollama Model</label>
-                    <input type="text" id="model-select" class="form-input" list="model-suggestions" placeholder="e.g. gemma4:9b, gemma3:4b, llava:13b">
-                    <datalist id="model-suggestions">
-                        <option value="gemma4:9b"></option>
-                        <option value="gemma4:27b"></option>
-                        <option value="gemma3:4b"></option>
-                        <option value="gemma3:12b"></option>
-                        <option value="gemma3:27b"></option>
-                        <option value="llava:7b"></option>
-                        <option value="llava:13b"></option>
-                        <option value="llama3.2-vision"></option>
-                    </datalist>
-                    <p class="form-hint">Type the exact name shown by <code>ollama list</code> in your terminal — this must match exactly, including the tag after the colon.</p>
+                    <label for="model-select" class="form-label">Gemma Model</label>
+                    <select id="model-select" class="form-select">
+                        <option value="gemma-4-12b-it">Gemma 4 12B (Default)</option>
+                        <option value="gemma-4-27b-it">Gemma 4 27B (Larger)</option>
+                        <option value="gemma-4-26b-a4b-it">Gemma 4 26B MoE (Efficient)</option>
+                        <option value="gemma-4-31b-it">Gemma 4 31B (Flagship)</option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">
