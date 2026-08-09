@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AccessiVision — AI-Powered Web Accessibility Analyzer. Upload screenshots to detect WCAG 2.1 violations using Gemma 4 multimodal vision.">
+    <meta name="keywords" content="accessibility, WCAG, web accessibility, AI, Gemma 4, analyzer, audit">
+    <title>AccessiVision — AI Web Accessibility Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>">
+</head>
+<body>
+    <div id="app">
+        <!-- ===== ANIMATED BACKGROUND ===== -->
+        <div class="bg-gradient" aria-hidden="true">
+            <div class="bg-orb bg-orb-1"></div>
+            <div class="bg-orb bg-orb-2"></div>
+            <div class="bg-orb bg-orb-3"></div>
+        </div>
+
+        <!-- ===== HEADER ===== -->
+        <header id="header">
+            <div class="container header-inner">
+                <a href="#" class="logo" aria-label="AccessiVision Home">
+                    <svg class="logo-icon" viewBox="0 0 40 40" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="18" stroke="url(#logoGrad)" stroke-width="2.5"/>
+                        <circle cx="20" cy="20" r="8" fill="url(#logoGrad)"/>
+                        <circle cx="20" cy="20" r="3" fill="#0a0e27"/>
+                        <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+                    </svg>
+                    <span class="logo-text">Accessi<span class="text-gradient">Vision</span></span>
+                </a>
+                <nav class="header-actions" aria-label="Main navigation">
+                    <button id="demo-btn" class="btn btn-ghost btn-sm" aria-label="Try demo analysis">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        <span>Demo</span>
+                    </button>
+                    <button id="history-btn" class="btn btn-icon" aria-label="View analysis history">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </button>
+                    <button id="settings-btn" class="btn btn-icon" aria-label="Settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- ===== HERO SECTION ===== -->
+        <section id="hero-section" class="section">
+            <div class="container hero-content">
+                <div class="hero-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
+                    Powered by Gemma 4 Multimodal AI
+                </div>
+                <h1 class="hero-title">
+                    Web Accessibility,<br>
+                    <span class="text-gradient">Analyzed by AI</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Upload a screenshot of any website or app. Gemma 4's vision AI will analyze it for 
+                    <strong>WCAG 2.1</strong> accessibility violations, generate a detailed audit report, 
+                    and provide ready-to-use code fixes.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-value">97%</span>
+                        <span class="stat-label">of top sites have<br>WCAG failures</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-value">6</span>
+                        <span class="stat-label">audit categories<br>analyzed</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-value">4-Pass</span>
+                        <span class="stat-label">agentic analysis<br>pipeline</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== UPLOAD SECTION ===== -->
+        <section id="upload-section" class="section">
+            <div class="container">
+                <div id="upload-zone" class="upload-zone glass-card" role="button" tabindex="0" aria-label="Upload screenshot for accessibility analysis">
+                    <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp" hidden aria-hidden="true">
+                    <div class="upload-icon-wrapper">
+                        <svg class="upload-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                    </div>
+                    <p class="upload-text">Drop your screenshot here</p>
+                    <p class="upload-subtext">or click to browse · PNG, JPG, WebP supported</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== IMAGE PREVIEW (hidden initially) ===== -->
+        <section id="preview-section" class="section hidden">
+            <div class="container">
+                <div class="preview-card glass-card">
+                    <div class="preview-image-wrapper">
+                        <img id="preview-img" src="" alt="Uploaded screenshot preview">
+                        <button id="remove-image-btn" class="btn btn-icon btn-remove" aria-label="Remove uploaded image">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                    <div class="preview-actions">
+                        <div class="preview-info">
+                            <span id="file-name" class="file-name">screenshot.png</span>
+                            <span id="file-size" class="file-size">2.4 MB</span>
+                        </div>
+                        <button id="analyze-btn" class="btn btn-primary btn-lg">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                            Analyze Accessibility
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ANALYSIS PROGRESS (hidden initially) ===== -->
+        <section id="analysis-section" class="section hidden">
+            <div class="container">
+                <div class="analysis-card glass-card">
+                    <h2 class="analysis-title">
+                        <div class="pulse-dot"></div>
+                        Analyzing with Gemma 4
+                    </h2>
+                    <div class="progress-bar-wrapper">
+                        <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <p id="progress-status" class="progress-status">Initializing analysis pipeline...</p>
+                    <div id="pass-indicators" class="pass-indicators">
+                        <div class="pass-step" data-pass="1">
+                            <div class="pass-dot"></div>
+                            <span class="pass-label">Visual Scan</span>
+                        </div>
+                        <div class="pass-connector"></div>
+                        <div class="pass-step" data-pass="2">
+                            <div class="pass-dot"></div>
+                            <span class="pass-label">Deep Audit</span>
+                        </div>
+                        <div class="pass-connector"></div>
+                        <div class="pass-step" data-pass="3">
+                            <div class="pass-dot"></div>
+                            <span class="pass-label">Remediation</span>
+                        </div>
+                        <div class="pass-connector"></div>
+                        <div class="pass-step" data-pass="4">
+                            <div class="pass-dot"></div>
+                            <span class="pass-label">Summary</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== RESULTS SECTION (hidden initially) ===== -->
+        <section id="results-section" class="section hidden">
+            <div class="container results-grid">
+
+                <!-- Score Card -->
+                <div id="score-section" class="score-card glass-card">
+                    <h2 class="section-title">Accessibility Score</h2>
+                    <div class="score-gauge">
+                        <svg viewBox="0 0 160 160" class="score-svg">
+                            <defs>
+                                <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ef4444"/>
+                                    <stop offset="50%" stop-color="#f59e0b"/>
+                                    <stop offset="100%" stop-color="#10b981"/>
+                                </linearGradient>
+                            </defs>
+                            <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="12"/>
+                            <circle id="score-circle" cx="80" cy="80" r="70" fill="none" stroke="url(#scoreGrad)" stroke-width="12" stroke-dasharray="440" stroke-dashoffset="440" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+                            <text x="80" y="72" text-anchor="middle" class="score-value-text" id="score-value">--</text>
+                            <text x="80" y="72" text-anchor="middle" class="score-max-text" dy="18">/100</text>
+                            <text x="80" y="110" text-anchor="middle" class="score-label-text" id="score-label">Analyzing...</text>
+                        </svg>
+                    </div>
+                    <div id="category-scores" class="category-scores">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Issues Panel -->
+                <div id="issues-panel" class="issues-panel glass-card">
+                    <div class="issues-header">
+                        <h2 class="section-title">Issues Found <span id="issues-count" class="issues-count-badge">0</span></h2>
+                        <div class="severity-filters">
+                            <button class="filter-chip active" data-filter="all">All</button>
+                            <button class="filter-chip" data-filter="critical">Critical</button>
+                            <button class="filter-chip" data-filter="major">Major</button>
+                            <button class="filter-chip" data-filter="minor">Minor</button>
+                        </div>
+                    </div>
+                    <div id="category-tabs" class="category-tabs" role="tablist">
+                        <button class="category-tab active" role="tab" aria-selected="true" data-category="all">
+                            <span class="tab-icon">📊</span>All
+                        </button>
+                        <button class="category-tab" role="tab" aria-selected="false" data-category="contrast">
+                            <span class="tab-icon">🎨</span>Contrast
+                        </button>
+                        <button class="category-tab" role="tab" aria-selected="false" data-category="typography">
+                            <span class="tab-icon">📝</span>Typography
+                        </button>
+                        <button class="category-tab" role="tab" aria-selected="false" data-category="navigation">
+                            <span class="tab-icon">🧭</span>Navigation
+                        </button>
+                        <button class="category-tab" role="tab" aria-selected="false" data-category="forms">
+                            <span class="tab-icon">📋</span>Forms
+                        </button>
+                        <button class="category-tab" role="tab" aria-selected="false" data-category="media">
+                            <span class="tab-icon">🖼️</span>Media
+                        </button>
+                        <button class="category-tab" role="tab" aria-selected="false" data-category="responsive">
+                            <span class="tab-icon">📱</span>Responsive
+                        </button>
+                    </div>
+                    <div id="issues-container" class="issues-container" role="tabpanel">
+                        <!-- Populated by JS -->
+                        <div class="issues-empty">
+                            <p>No issues to display yet. Run an analysis to see results.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SUMMARY SECTION (hidden initially) ===== -->
+        <section id="summary-section" class="section hidden">
+            <div class="container">
+                <div class="summary-card glass-card">
+                    <h2 class="section-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        Executive Summary
+                    </h2>
+                    <div id="summary-content" class="summary-content">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="summary-grid">
+                        <div id="priority-list" class="priority-card">
+                            <h3>🔥 Top Priorities</h3>
+                            <!-- Populated by JS -->
+                        </div>
+                        <div id="effort-card" class="effort-card">
+                            <h3>⏱️ Estimated Effort</h3>
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Actions -->
+                <div class="export-actions">
+                    <button id="export-html-btn" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Download Report
+                    </button>
+                    <button id="export-json-btn" class="btn btn-secondary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        Export JSON
+                    </button>
+                    <button id="copy-summary-btn" class="btn btn-ghost">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        Copy Summary
+                    </button>
+                    <button id="new-analysis-btn" class="btn btn-ghost">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                        New Analysis
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="site-footer">
+            <div class="container footer-inner">
+                <p>Built with <span class="text-gradient">Gemma 4</span> by AccessiVision · Making the web accessible for everyone</p>
+                <p class="footer-sub">Powered by Google's Gemma 4 Multimodal AI · WCAG 2.1 Level AA Analysis</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ===== SETTINGS MODAL ===== -->
+    <div id="settings-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-label="Settings">
+        <div class="modal-panel glass-card">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button id="close-settings-btn" class="btn btn-icon" aria-label="Close settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <p class="form-hint">
+                        Using local Ollama at <code>http://localhost:11434</code> — no API key needed.
+                        <span id="api-key-status" class="status-dot connected"></span>
+                    </p>
+                    <p class="form-hint">Run <code>ollama serve</code> and make sure you've pulled a vision model (see README).</p>
+                </div>
+                <div class="form-group">
+                    <label for="model-select" class="form-label">Ollama Model</label>
+                    <input type="text" id="model-select" class="form-input" list="model-suggestions" placeholder="e.g. gemma4:9b, gemma3:4b, llava:13b">
+                    <datalist id="model-suggestions">
+                        <option value="gemma4:9b"></option>
+                        <option value="gemma4:27b"></option>
+                        <option value="gemma3:4b"></option>
+                        <option value="gemma3:12b"></option>
+                        <option value="gemma3:27b"></option>
+                        <option value="llava:7b"></option>
+                        <option value="llava:13b"></option>
+                        <option value="llama3.2-vision"></option>
+                    </datalist>
+                    <p class="form-hint">Type the exact name shown by <code>ollama list</code> in your terminal — this must match exactly, including the tag after the colon.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="save-settings-btn" class="btn btn-primary">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== HISTORY DRAWER ===== -->
+    <div id="history-drawer" class="drawer" aria-hidden="true">
+        <div class="drawer-panel glass-card">
+            <div class="drawer-header">
+                <h2>Analysis History</h2>
+                <button id="close-history-btn" class="btn btn-icon" aria-label="Close history">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div id="history-list" class="history-list">
+                <div class="history-empty">
+                    <p>No analysis history yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
